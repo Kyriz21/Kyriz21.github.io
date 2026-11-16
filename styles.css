@@ -2227,3 +2227,7 @@
 .visual-work-card figcaption {
   display: none;
 }
+/* Sembunyikan sementara catatan proyek */
+.project-note {
+  display: none;
+}

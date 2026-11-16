@@ -2175,6 +2175,10 @@
 .visual-works-heading > p, .certificate-heading > p { max-width: 28rem; margin: 0; color: #9da9b9; font-size: .78rem; }
 .visual-works-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
 .visual-work-card .image-slot { aspect-ratio: 4 / 3; }
+/* Khusus desain media sosial */
+.visual-work-card.social-post-card .image-slot {
+  aspect-ratio: 4 / 5;
+}
 .education { background: var(--ink-2); color: var(--text); }
 .education .section-label { color: #9aa6b8; }
 .education .section-label span:first-child { color: var(--lime); }

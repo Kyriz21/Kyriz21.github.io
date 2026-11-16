@@ -581,11 +581,32 @@
 }
 
 .ticker-group span {
-  white-sp
-    .ticker:hover .ticker-track { animation-play-state: paused; }
-    .ticker-track span { font: clamp(0.6rem, 0.65rem + 0.1vw, 0.7rem) var(--mono); letter-spacing: .16em; color: #b8c1cc; }
-    .ticker-track b { color: var(--lime); font-size: 0.875rem; }
-    @keyframes ticker { to { transform: translateX(-50%); } }
+  white-space: nowrap;
+  font: clamp(0.6rem, 0.65rem + 0.1vw, 0.7rem) var(--mono);
+  letter-spacing: .16em;
+  color: #b8c1cc;
+}
+
+.ticker-group b {
+  color: var(--lime);
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* Animasi berhenti saat kursor diarahkan */
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* Animasi bergerak berulang */
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
 
     /* Section Defaults */
     .section-pad {

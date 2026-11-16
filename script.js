@@ -15,22 +15,32 @@
       "proj-sdi": {
         category: "01 / PROYEK PEKERJAAN NYATA · DIGITAL OPERATIONS",
         type: "Pengalaman kerja — Biro SDI UMKT",
-        title: "Pengembangan Website dan Direktori Pegawai SDI UMKT",
-        challenge: "Informasi dan data kepegawaian perlu disajikan secara lebih terstruktur dan mudah diakses melalui website unit.",
-        solution: "Mengelola dan mengoptimalkan halaman website SDI, mengintegrasikan Google Sheets sebagai sumber data menggunakan JavaScript, mengolah serta menampilkan data pegawai, dan mengembangkan fitur pencarian serta filter untuk direktori tenaga kependidikan.",
-        output: "Penyajian informasi dan direktori pegawai yang lebih terstruktur melalui website. Kontribusi juga mencakup penyusunan infografis statistik dosen dan tenaga kependidikan.",
-        deliverables: ["Pengelolaan dan pembaruan halaman website SDI", "Integrasi Google Sheets → JavaScript → website", "Direktori tenaga kependidikan dengan pencarian dan filter", "Infografis statistik dosen dan tenaga kependidikan"],
-        tags: ["Google Sheets", "JavaScript", "Website Administration", "Search & Filter", "Infografis"],
+        title: "Pengelolaan dan Pengembangan Website Profil Biro SDI UMKT",
+        challenge: "Website Biro Sumber Daya Insani (SDI) merupakan salah satu media informasi dan layanan digital bagi dosen, tenaga kependidikan, serta sivitas akademika. Website membutuhkan pengelolaan konten, pembaruan informasi, dan penataan tampilan secara berkala agar informasi layanan dan kepegawaian dapat diakses dengan lebih terstruktur.",
+        solution: "Melakukan pengelolaan dan optimalisasi website berbasis Content Management System (CMS) melalui pembaruan konten, penataan halaman, serta pengembangan komponen informasi dan layanan digital. Pekerjaan juga mencakup pengolahan dan penyajian data kepegawaian, integrasi Google Sheets dengan website menggunakan JavaScript, serta pengembangan fitur direktori untuk mempermudah pencarian informasi pegawai.",
+        output: "Pengelolaan website menghasilkan penyajian informasi Biro SDI yang lebih terstruktur melalui pembaruan halaman, komponen layanan, konten digital, dan informasi kepegawaian. Pengembangan direktori dan integrasi sumber data mendukung penyajian informasi pegawai yang lebih dinamis dan memudahkan pengguna menemukan data yang dibutuhkan.",
+        deliverables: [
+          "Pengelolaan dan pembaruan halaman website SDI",
+          "Pengelolaan konten melalui CMS dan CKEditor",
+          "Penataan layout, navigasi, dan komponen tampilan website",
+          "Pengembangan komponen layanan, tab navigasi, kalender, galeri interaktif, dan informasi tim",
+          "Pengolahan data dosen dan tenaga kependidikan serta penyusunan infografis statistik",
+          "Integrasi Google Sheets → JavaScript → website",
+          "Direktori tenaga kependidikan dengan fitur pencarian dan filter"
+        ],
+        tags: ["CMS", "CKEditor", "Google Sheets", "JavaScript", "Website Administration", "Search & Filter", "Data Visualization"],
         media: [
-          { src: "assets/images/projects/sdi-website-cover.jpg", alt: "Tampilan halaman website SDI UMKT", label: "Halaman Website SDI", caption: "Tangkapan layar halaman website SDI." },
-          { src: "assets/images/projects/sdi-direktori-pegawai.jpg", alt: "Tampilan direktori tenaga kependidikan SDI UMKT", label: "Direktori Pegawai", caption: "Tampilan direktori dan fitur pencarian/filter. Samarkan data personal sebelum diunggah." },
-          { src: "assets/images/projects/sdi-infografis-statistik.jpg", alt: "Infografis statistik dosen dan tenaga kependidikan", label: "Infografis Statistik", caption: "Contoh infografis statistik kepegawaian." },
-          { src: "assets/images/projects/sdi-alur-integrasi.jpg", alt: "Diagram alur integrasi Google Sheets, JavaScript, dan website", label: "Alur Integrasi", caption: "Diagram alur sumber data hingga tampil pada website." }
+          { src: "assets/images/projects/sdi-website-cover.jpg", alt: "Halaman utama website profil Biro SDI UMKT", caption: "Tampilan halaman utama dan profil website Biro SDI UMKT." },
+          { src: "assets/images/projects/sdi-layanan-komponen.jpg", alt: "Halaman layanan dan komponen informasi website SDI", caption: "Halaman layanan dan komponen informasi digital." },
+          { src: "assets/images/projects/sdi-kalender-galeri.jpg", alt: "Kalender dan galeri interaktif website SDI", caption: "Contoh kalender dan galeri interaktif pada website." },
+          { src: "assets/images/projects/sdi-infografis-statistik.jpg", alt: "Infografis statistik dosen dan tenaga kependidikan", caption: "Infografis statistik dosen dan tenaga kependidikan." },
+          { src: "assets/images/projects/sdi-direktori-pegawai.jpg", alt: "Direktori tenaga kependidikan dengan fitur pencarian dan filter", caption: "Tampilan direktori pegawai. Samarkan nama dan data personal sebelum dipublikasikan." },
+          { src: "assets/images/projects/sdi-alur-integrasi.jpg", alt: "Diagram integrasi Google Sheets, JavaScript, dan website", caption: "Diagram alur integrasi sumber data Google Sheets ke website melalui JavaScript." }
         ]
       },
       "proj-bekantan": {
         category: "02 / PENGALAMAN KERJA NYATA · DATA & REPORTING",
-        type: "Pengalaman kerja paruh waktu — Bekantan Outdoor",
+        type: "Pengalaman Kerja Paruh Waktu — Bekantan Outdoor",
         title: "Dashboard dan Laporan Operasional Bekantan Outdoor",
         challenge: "Data transaksi penyewaan perlu direkap agar aktivitas operasional, pendapatan, dan kategori barang dapat dipantau.",
         solution: "Mengelola data transaksi, pendapatan, pelanggan, dan kategori barang menggunakan Google Sheets, kemudian menyusun laporan operasional serta ringkasan data penyewaan.",
@@ -195,7 +205,7 @@
       $("#work")?.scrollIntoView({ behavior: "smooth" });
     });
 
-    // 6. Foto opsional: placeholder tetap tampil sampai file foto tersedia.
+    // 6. Foto opsional: gambar tampil saat file tersedia; slot kosong tetap menggunakan latar netral.
     // 7. Scroll Reveal Animations & Project Filters
     const revealItems = $$(".reveal");
     if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -234,7 +244,7 @@
     const projectModal = $("#projectModal");
     const messageModal = $("#messageModal");
     const cmdModal = $("#cmdModal");
-    let currentProjectId = "proj-data";
+    let currentProjectId = PROJECT_ORDER[0];
 
     function openModal(modalEl) {
       if (!modalEl) return;
@@ -307,7 +317,6 @@
           <figure class="modal-media-item">
             <div class="image-slot modal-image-slot">
               <img class="optional-image" data-optional-image src="${item.src}" alt="${item.alt}" loading="lazy">
-              <div class="image-placeholder"><span class="placeholder-mark">＋</span><strong>${item.label}</strong><small>${item.src}</small></div>
             </div>
             <figcaption>${item.caption}</figcaption>
           </figure>

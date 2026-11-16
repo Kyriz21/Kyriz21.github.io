@@ -319,14 +319,16 @@
     }
     .eyebrow-year { color: var(--lime); }
 
-    .hero h1 {
-      font-size: clamp(2.35rem, 1.5rem + 4.2vw, 5.25rem);
-      line-height: 1.04;
-      letter-spacing: -.055em;
-      margin: 0;
-      font-weight: 800;
-      overflow-wrap: break-word;
-    }
+   .hero h1 {
+  font-size: clamp(2.25rem, 1.35rem + 3.8vw, 4.75rem);
+  line-height: 1.04;
+  letter-spacing: -.055em;
+  margin: 0;
+  font-weight: 800;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
     .hero h1 em, .section-heading-row h2 em, .about-heading h2 em,
     .experience-intro h2 em, .contact h2 em {
       font-style: normal;

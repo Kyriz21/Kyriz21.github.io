@@ -30,12 +30,12 @@
         ],
         tags: ["CMS", "CKEditor", "Google Sheets", "JavaScript", "Website Administration", "Search & Filter", "Data Visualization"],
         media: [
-          { src: "assets/images/projects/sdi-website-cover.jpg", alt: "Halaman utama website profil Biro SDI UMKT", caption: "Tampilan halaman utama dan profil website Biro SDI UMKT." },
-          { src: "assets/images/projects/sdi-layanan-komponen.jpg", alt: "Halaman layanan dan komponen informasi website SDI", caption: "Halaman layanan dan komponen informasi digital." },
-          { src: "assets/images/projects/sdi-kalender-galeri.jpg", alt: "Kalender dan galeri interaktif website SDI", caption: "Contoh kalender dan galeri interaktif pada website." },
-          { src: "assets/images/projects/sdi-infografis-statistik.jpg", alt: "Infografis statistik dosen dan tenaga kependidikan", caption: "Infografis statistik dosen dan tenaga kependidikan." },
-          { src: "assets/images/projects/sdi-direktori-pegawai.jpg", alt: "Direktori tenaga kependidikan dengan fitur pencarian dan filter", caption: "Tampilan direktori pegawai. Samarkan nama dan data personal sebelum dipublikasikan." },
-          { src: "assets/images/projects/sdi-alur-integrasi.jpg", alt: "Diagram integrasi Google Sheets, JavaScript, dan website", caption: "Diagram alur integrasi sumber data Google Sheets ke website melalui JavaScript." }
+          { src: "assets/images/Web-1.png", alt: "Halaman utama website profil Biro SDI UMKT", caption: "Tampilan halaman utama dan profil website Biro SDI UMKT." },
+          { src: "assets/images/projects/Web-2.png", alt: "Halaman layanan dan komponen informasi website SDI", caption: "Halaman layanan dan komponen informasi digital." },
+          { src: "assets/images/projects/Web-3.png", alt: "Kalender dan galeri interaktif website SDI", caption: "Contoh kalender dan galeri interaktif pada website." },
+          { src: "assets/images/projects/Web-4.png", alt: "Infografis statistik dosen dan tenaga kependidikan", caption: "Infografis statistik dosen dan tenaga kependidikan." },
+          { src: "assets/images/projects/Web-5.png", alt: "Direktori tenaga kependidikan dengan fitur pencarian dan filter", caption: "Tampilan direktori pegawai. Samarkan nama dan data personal sebelum dipublikasikan." },
+          { src: "assets/images/projects/Web-6.png", alt: "Diagram integrasi Google Sheets, JavaScript, dan website", caption: "Diagram alur integrasi sumber data Google Sheets ke website melalui JavaScript." }
         ]
       },
       "proj-bekantan": {

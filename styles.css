@@ -2182,7 +2182,7 @@
 .profile-photo-card .photo-badge-overlay { z-index: 3; }
 .project-visual { padding: 0; background: #1a2a3b; }
 .project-cover { position: absolute; inset: 0; border: 0; border-radius: 0; background: linear-gradient(135deg, #1a2a3b, #25384a); }
-.project-cover .image-placeholder { padding: 2.1rem 1.25rem; }
+.project-cover .image-placeholder {display: none;}
 .project-visual .visual-index { z-index: 2; }
 .project-media-grid, .modal-media-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .9rem; margin: 1.2rem 0; }
 .modal-media-item, .visual-work-card { min-width: 0; margin: 0; }

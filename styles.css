@@ -2199,3 +2199,6 @@
 
 .profile-photo-card > img.optional-image { opacity: 0; }
 .profile-photo-card.has-image > img.optional-image { opacity: 1; }
+.profile-photo-card.has-image .image-placeholder {
+  display: none;
+}

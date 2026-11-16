@@ -2202,3 +2202,6 @@
 .profile-photo-card.has-image .image-placeholder {
   display: none;
 }
+.cmd-trigger-btn[hidden] {
+  display: none;
+}

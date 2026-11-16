@@ -2220,3 +2220,10 @@
 
 
 .cmd-trigger-btn[hidden] { display: none !important; }
+
+/* Sembunyikan keterangan di bawah foto proyek
+   dan galeri karya visual */
+.modal-media-item figcaption,
+.visual-work-card figcaption {
+  display: none;
+}

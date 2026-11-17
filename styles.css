@@ -2563,3 +2563,32 @@
     gap: 1rem;
   }
 }
+
+/* =====================================================
+   WIDE VIEWPORT — ADAPTIVE CONTENT WIDTH
+   Mengurangi ruang kosong saat browser zoom out
+   ===================================================== */
+
+@media (min-width: 90rem) {
+
+  :root {
+    --max-shell: min(88vw, 140rem);
+    --container-pad: clamp(2rem, 4vw, 4rem);
+  }
+
+  /* Ukuran kartu proyek tetap proporsional */
+  .project-grid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, clamp(20rem, 27vw, 32rem)), 1fr)
+    );
+  }
+
+  /* Kartu kompetensi menyesuaikan lebar layar */
+  .expertise-grid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, clamp(15.25rem, 20vw, 23rem)), 1fr)
+    );
+  }
+}

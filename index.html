@@ -1054,7 +1054,14 @@
       </p>
      </div>
      <div class="certificate-grid">
-      <article class="certificate-card reveal">
+      
+ <article
+  class="certificate-card reveal certificate-card-clickable"
+  data-cert-page2="assets/images/certificates/office-administrative-bnsp-kompetensi.jpg"
+  role="button"
+  tabindex="0"
+  aria-label="Lihat sertifikat Office Administrative BNSP">
+
        <div class="image-slot certificate-image">
         <img alt="Dokumen SKL Uji Kompetensi Office Administrative BNSP" class="optional-image" data-optional-image="" loading="lazy" src="assets/images/certificates/office-administrative-bnsp.jpg"/>
        </div>
@@ -1276,6 +1283,56 @@
     </div>
    </div>
   </div>
+  
+<!-- Modal Detail Sertifikat -->
+<div
+  aria-hidden="true"
+  aria-modal="true"
+  class="modal-backdrop"
+  id="certificateModal"
+  role="dialog">
+
+  <div class="modal-dialog certificate-dialog">
+
+    <div class="modal-header">
+      <div>
+        <span class="modal-eyebrow">
+          CERTIFICATION DETAIL
+        </span>
+        <h3 id="certificateModalTitle">
+          Judul Sertifikat
+        </h3>
+        <span class="modal-project-type">
+          Dokumen Sertifikasi & Materi Kompetensi
+        </span>
+      </div>
+
+      <button
+        aria-label="Tutup sertifikat"
+        class="modal-close"
+        data-close-modal
+        type="button">
+        ✕
+      </button>
+    </div>
+
+    <div class="certificate-pages-grid" id="certificatePages">
+
+      <figure class="certificate-page">
+        <img id="certificatePage1" alt="Halaman pertama sertifikat">
+        <figcaption>HALAMAN 01 — SERTIFIKAT</figcaption>
+      </figure>
+
+      <figure class="certificate-page" id="certificatePage2Wrap">
+        <img id="certificatePage2" alt="Halaman kedua sertifikat">
+        <figcaption>HALAMAN 02 — MATERI KOMPETENSI</figcaption>
+      </figure>
+
+    </div>
+
+  </div>
+</div>
+
   <!-- Modal 2: Quick Message Composer -->
   <div aria-hidden="true" aria-modal="true" class="modal-backdrop" id="messageModal" role="dialog">
    <div class="modal-dialog">

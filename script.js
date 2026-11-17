@@ -409,13 +409,19 @@ document.addEventListener("keydown", (event) => {
           card.querySelector("h4")?.textContent.trim() || "Sertifikat";
 
         certificatePage1.src =
-          coverImage.currentSrc || coverImage.src;
+  card.dataset.certPage1 ||
+  coverImage.currentSrc ||
+  coverImage.src;
 
-        certificatePage1.alt =
-          coverImage.alt || "Halaman pertama sertifikat";
+const page2Src = card.dataset.certPage2;
 
-        certificatePage2.src = card.dataset.certPage2;
-        certificatePage2Wrap.hidden = !card.dataset.certPage2;
+if (page2Src) {
+  certificatePage2.src = page2Src;
+  certificatePage2Wrap.hidden = false;
+} else {
+  certificatePage2.removeAttribute("src");
+  certificatePage2Wrap.hidden = true;
+}
 
         openModal(certificateModal);
       };

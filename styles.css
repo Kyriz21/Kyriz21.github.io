@@ -2363,3 +2363,73 @@
   color: #495567;
   border-color: rgba(16, 22, 37, .15);
 }
+
+/* =====================================================
+   CERTIFICATE DETAIL POPUP
+   ===================================================== */
+
+/* Kartu sertifikat bisa diklik */
+.certificate-card-clickable {
+  cursor: pointer;
+  transition: transform .25s ease, border-color .25s ease,
+              box-shadow .25s ease;
+}
+
+.certificate-card-clickable:hover {
+  transform: translateY(-5px);
+  border-color: var(--lime-dark);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .12);
+}
+
+.certificate-card-clickable:focus-visible {
+  outline: 2px solid var(--lime-dark);
+  outline-offset: 4px;
+}
+
+/* Ukuran popup sertifikat */
+.certificate-dialog {
+  width: min(72rem, 100%);
+}
+
+/* Tampilan dua halaman */
+.certificate-pages-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.certificate-page {
+  min-width: 0;
+  margin: 0;
+}
+
+.certificate-page img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 72vh;
+  object-fit: contain;
+  background: #e9e9df;
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+}
+
+.certificate-page figcaption {
+  margin-top: .65rem;
+  color: var(--muted);
+  font: .65rem var(--mono);
+  letter-spacing: .08em;
+  text-align: center;
+}
+
+/* Tampilan handphone */
+@media (max-width: 650px) {
+  .certificate-pages-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-page img {
+    max-height: 75vh;
+  }
+}

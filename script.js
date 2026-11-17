@@ -48,8 +48,13 @@
         deliverables: ["Rekap data transaksi penyewaan", "Ringkasan pendapatan dan pelanggan", "Pengelompokan kategori barang", "Laporan operasional dan tren penyewaan"],
         tags: ["Google Sheets", "Operational Reporting", "Transaction Data", "Data Summary"],
         media: [
-          { src: "assets/images/projects/bekantan-dashboard-operasional.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
-          { src: "assets/images/projects/bekantan-rekap-transaksi.jpg", alt: "Rekap transaksi penyewaan Bekantan Outdoor", label: "Rekap Transaksi", caption: "Contoh ringkasan transaksi yang telah dianonimkan." }
+          { src: "assets/images/projects/bekantan-1.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
+          { src: "assets/images/projects/bekantan-2.jpg", alt: "Rekap transaksi penyewaan Bekantan Outdoor", label: "Rekap Transaksi", caption: "Contoh ringkasan transaksi yang telah dianonimkan." }
+          { src: "assets/images/projects/bekantan-3.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
+          { src: "assets/images/projects/bekantan-4.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
+
+      
+        
         ]
       },
       "proj-powerbi": {
@@ -62,8 +67,8 @@
         deliverables: ["Dataset penjualan simulasi yang telah disiapkan", "Indikator dan visualisasi penjualan", "Dashboard tren penjualan", "Visual kontribusi produk/kategori"],
         tags: ["Power BI", "Data Preparation", "Sales Analytics", "Data Visualization"],
         media: [
-          { src: "assets/images/projects/powerbi-dashboard-penjualan.jpg", alt: "Dashboard penjualan Power BI dari data simulasi", label: "Dashboard Utama", caption: "Dashboard Power BI dengan dataset simulasi." },
-          { src: "assets/images/projects/powerbi-visualisasi-tren.jpg", alt: "Visualisasi tren dan kategori penjualan di Power BI", label: "Visualisasi Pendukung", caption: "Contoh visual tren atau kontribusi produk/kategori." }
+          { src: "assets/images/projects/bi-1.jpg", alt: "Dashboard penjualan Power BI dari data simulasi", label: "Dashboard Utama", caption: "Dashboard Power BI dengan dataset simulasi." },
+          { src: "assets/images/projects/bi-2.jpg", alt: "Visualisasi tren dan kategori penjualan di Power BI", label: "Visualisasi Pendukung", caption: "Contoh visual tren atau kontribusi produk/kategori." }
         ]
       },
       "proj-excel": {
@@ -76,8 +81,7 @@
         deliverables: ["Pengolahan dataset penjualan simulasi", "Ringkasan data berdasarkan periode", "Ringkasan berdasarkan kategori", "Visualisasi dan laporan penjualan"],
         tags: ["Microsoft Excel", "Data Processing", "Sales Reporting", "Data Visualization"],
         media: [
-          { src: "assets/images/projects/excel-analisis-penjualan.jpg", alt: "Laporan analisis penjualan di Microsoft Excel", label: "Laporan Analisis", caption: "Laporan analisis penjualan menggunakan dataset simulasi." },
-          { src: "assets/images/projects/excel-ringkasan-kategori.jpg", alt: "Ringkasan penjualan berdasarkan kategori di Excel", label: "Ringkasan Kategori", caption: "Contoh ringkasan dan visualisasi berdasarkan kategori/periode." }
+          { src: "assets/images/projects/excel-1.jpg", alt: "Laporan analisis penjualan di Microsoft Excel", label: "Laporan Analisis", caption: "Laporan analisis penjualan menggunakan dataset simulasi." },
         ]
       }
     };

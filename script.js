@@ -49,7 +49,7 @@
         tags: ["Google Sheets", "Operational Reporting", "Transaction Data", "Data Summary"],
         media: [
           { src: "assets/images/projects/bekantan-1.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
-          { src: "assets/images/projects/bekantan-2.jpg", alt: "Rekap transaksi penyewaan Bekantan Outdoor", label: "Rekap Transaksi", caption: "Contoh ringkasan transaksi yang telah dianonimkan." }
+          { src: "assets/images/projects/bekantan-2.jpg", alt: "Rekap transaksi penyewaan Bekantan Outdoor", label: "Rekap Transaksi", caption: "Contoh ringkasan transaksi yang telah dianonimkan." },
           { src: "assets/images/projects/bekantan-3.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
           { src: "assets/images/projects/bekantan-4.jpg", alt: "Dashboard operasional Bekantan Outdoor", label: "Dashboard Operasional", caption: "Tampilan dashboard/laporan. Samarkan data pelanggan dan informasi internal." },
 

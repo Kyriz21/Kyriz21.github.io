@@ -328,7 +328,55 @@
         initOptionalImages(mediaEl);
       }
     }
+// Lightbox untuk preview gambar proyek
+const portfolioLightbox = document.createElement("div");
+portfolioLightbox.className = "portfolio-lightbox";
 
+portfolioLightbox.innerHTML = `
+  <button class="portfolio-lightbox-close" type="button" aria-label="Tutup gambar">×</button>
+  <img class="portfolio-lightbox-image" alt="Pratinjau gambar proyek">
+`;
+
+document.body.appendChild(portfolioLightbox);
+
+const portfolioLightboxImage = portfolioLightbox.querySelector(
+  ".portfolio-lightbox-image"
+);
+
+function closePortfolioLightbox() {
+  portfolioLightbox.classList.remove("is-open");
+  portfolioLightboxImage.removeAttribute("src");
+}
+
+document.addEventListener("click", (event) => {
+  const clickedImage = event.target.closest(
+    "#modalMedia .modal-image-slot img"
+  );
+
+  if (clickedImage) {
+    portfolioLightboxImage.src =
+      clickedImage.currentSrc || clickedImage.src;
+
+    portfolioLightboxImage.alt =
+      clickedImage.alt || "Pratinjau gambar proyek";
+
+    portfolioLightbox.classList.add("is-open");
+    return;
+  }
+
+  if (
+    event.target === portfolioLightbox ||
+    event.target.closest(".portfolio-lightbox-close")
+  ) {
+    closePortfolioLightbox();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closePortfolioLightbox();
+  }
+});
     projectCards.forEach(card => {
       const triggerOpen = () => {
         populateProjectModal(card.dataset.projectId);

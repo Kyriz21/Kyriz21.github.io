@@ -392,6 +392,45 @@ document.addEventListener("keydown", (event) => {
       });
     });
 
+    // Certificate Modal
+    const certificateModal = $("#certificateModal");
+    const certificatePage1 = $("#certificatePage1");
+    const certificatePage2 = $("#certificatePage2");
+    const certificatePage2Wrap = $("#certificatePage2Wrap");
+    const certificateModalTitle = $("#certificateModalTitle");
+
+    $$(".certificate-card-clickable").forEach(card => {
+      const openCertificate = () => {
+        const coverImage = card.querySelector(".certificate-image img");
+
+        if (!coverImage || !certificateModal) return;
+
+        certificateModalTitle.textContent =
+          card.querySelector("h4")?.textContent.trim() || "Sertifikat";
+
+        certificatePage1.src =
+          coverImage.currentSrc || coverImage.src;
+
+        certificatePage1.alt =
+          coverImage.alt || "Halaman pertama sertifikat";
+
+        certificatePage2.src = card.dataset.certPage2;
+        certificatePage2Wrap.hidden = !card.dataset.certPage2;
+
+        openModal(certificateModal);
+      };
+
+      card.addEventListener("click", openCertificate);
+
+      card.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openCertificate();
+        }
+      });
+    });
+
+
     $("#prevProjBtn")?.addEventListener("click", () => {
       const idx = PROJECT_ORDER.indexOf(currentProjectId);
       const prevIdx = (idx - 1 + PROJECT_ORDER.length) % PROJECT_ORDER.length;

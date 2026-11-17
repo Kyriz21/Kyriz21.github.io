@@ -517,3 +517,65 @@ document.addEventListener("keydown", (event) => {
     // 12. Current Year in Footer
     const yearNow = $("#yearNow");
     if (yearNow) yearNow.textContent = new Date().getFullYear();
+
+/* =====================================================
+   EXPERTISE SECTION — FIXED COLOR FOR ALL THEMES
+   ===================================================== */
+
+/* Warna dasar bagian Expertise */
+.expertise {
+  color: #101625;
+}
+
+/* Judul utama dan aksen */
+.expertise .section-heading-row h2 {
+  color: #101625;
+}
+
+.expertise .section-heading-row h2 em {
+  color: #557a22;
+}
+
+/* Teks pengantar */
+.expertise .section-heading-row > p {
+  color: #5b677a;
+}
+
+/* Kartu kompetensi */
+.expertise .expertise-card h3 {
+  color: #101625;
+}
+
+.expertise .expertise-card p {
+  color: #5b677a;
+}
+
+/* Kartu Tools Operasional dan Eksplorasi */
+.expertise .tools-context-card {
+  background: #e9e9df;
+  border-color: rgba(16, 22, 37, .12);
+}
+
+.expertise .tools-context-card h3 {
+  color: #101625;
+}
+
+.expertise .tools-context-card p {
+  color: #5b677a;
+}
+
+/* Label kategori */
+.expertise .context-label {
+  color: #557a22;
+}
+
+/* Label nomor kategori */
+.expertise .card-topline {
+  color: #647083;
+}
+
+/* Tag kompetensi */
+.expertise .tag-list span {
+  color: #495567;
+  border-color: rgba(16, 22, 37, .15);
+}

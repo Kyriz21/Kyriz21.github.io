@@ -2570,10 +2570,9 @@
    ===================================================== */
 
 @media (min-width: 90rem) {
-
   :root {
-    --max-shell: min(88vw, 140rem);
-    --container-pad: clamp(2rem, 4vw, 4rem);
+    --max-shell: 94vw;
+    --container-pad: clamp(1.5rem, 3vw, 4rem);
   }
 
   /* Ukuran kartu proyek tetap proporsional */

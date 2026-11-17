@@ -30,7 +30,7 @@
         ],
         tags: ["CMS", "CKEditor", "Google Sheets", "JavaScript", "Website Administration", "Search & Filter", "Data Visualization"],
         media: [
-          { src: "assets/images/Web-1.png", alt: "Halaman utama website profil Biro SDI UMKT", caption: "Tampilan halaman utama dan profil website Biro SDI UMKT." },
+          { src: "assets/images/projects/Web-1.png", alt: "Halaman utama website profil Biro SDI UMKT", caption: "Tampilan halaman utama dan profil website Biro SDI UMKT." },
           { src: "assets/images/projects/Web-2.png", alt: "Halaman layanan dan komponen informasi website SDI", caption: "Halaman layanan dan komponen informasi digital." },
           { src: "assets/images/projects/Web-3.png", alt: "Kalender dan galeri interaktif website SDI", caption: "Contoh kalender dan galeri interaktif pada website." },
           { src: "assets/images/projects/Web-4.png", alt: "Infografis statistik dosen dan tenaga kependidikan", caption: "Infografis statistik dosen dan tenaga kependidikan." },

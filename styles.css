@@ -2235,3 +2235,69 @@
 .project-note {
   display: none;
 }
+
+/* Lightbox - Preview gambar proyek */
+.portfolio-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background: rgba(5, 9, 18, 0.94);
+  backdrop-filter: blur(8px);
+}
+
+.portfolio-lightbox.is-open {
+  display: flex;
+}
+
+.portfolio-lightbox-image {
+  display: block;
+  max-width: 94vw;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.portfolio-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 600px) {
+  .portfolio-lightbox {
+    padding: 12px;
+  }
+
+  .portfolio-lightbox-image {
+    max-width: 96vw;
+    max-height: 85vh;
+  }
+
+  .portfolio-lightbox-close {
+    top: 12px;
+    right: 12px;
+  }
+}

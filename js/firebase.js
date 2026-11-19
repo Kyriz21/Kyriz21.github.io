@@ -19,13 +19,13 @@ import {
 } from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-database.js';
 
 const firebaseConfig = {
-  apiKey: 'PASTE_NEW_API_KEY_HERE',
-  authDomain: 'PASTE_NEW_PROJECT_ID.firebaseapp.com',
-  databaseURL: 'PASTE_NEW_REALTIME_DATABASE_URL_HERE',
-  projectId: 'PASTE_NEW_PROJECT_ID_HERE',
-  storageBucket: 'PASTE_NEW_STORAGE_BUCKET_HERE',
-  messagingSenderId: 'PASTE_NEW_MESSAGING_SENDER_ID_HERE',
-  appId: 'PASTE_NEW_APP_ID_HERE',
+  apiKey: "AIzaSyAwyBmNBnV8STojq-grG161d9H0F_jSsgM",
+  authDomain: "ldr-playroom-diri.firebaseapp.com",
+  databaseURL: "https://ldr-playroom-diri-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "ldr-playroom-diri",
+  storageBucket: "ldr-playroom-diri.firebasestorage.app",
+  messagingSenderId: "139253379985",
+  appId: "1:139253379985:web:c361e0d1e5418413a3a030"
   // measurementId is optional; omit it when Google Analytics is not enabled.
 };
 

@@ -4,8 +4,14 @@ import {
   joinRoom,
   watchRoom,
   startPresence,
-  leaveRoom,
 } from './firebase.js';
+import {
+  leaveRoom,
+  selectRoomGame,
+  startRoomGame,
+  playTicTacToeMove,
+  startNewTicTacToeRound,
+} from './game-service.js';
 
 const $ = (id) => document.getElementById(id);
 const roomDialog = $('roomDialog');
@@ -23,11 +29,20 @@ const lobbyStatus = $('lobbyStatus');
 const playerList = $('playerList');
 const roomTip = $('lobbyTip');
 const roomGames = $('roomGames');
-const copyCode = $('copyCode');
+const myGameChoice = $('myGameChoice');
+const partnerGameChoice = $('partnerGameChoice');
+const selectionHint = $('selectionHint');
+const startGameButton = $('startGame');
+const activeGameBanner = $('activeGameBanner');
 const leaveRoomButton = $('leaveRoom');
 const gameDialog = $('gameDialog');
+const ticBoard = $('ticBoard');
+const gameStatus = $('gameStatus');
+const rematchButton = $('rematchGame');
 const toast = $('toast');
 
+const GAME_NAMES = { 'tic-tac-toe': 'Tic Tac Toe' };
+const AVAILABLE_GAMES = new Set(['tic-tac-toe']);
 let mode = 'create';
 let currentUser = null;
 let activeCode = null;
@@ -37,6 +52,8 @@ let stopRoomWatch = null;
 let stopPresenceWatch = null;
 let toastTimer = null;
 let submitting = false;
+let moving = false;
+let lastOpenedRoundKey = null;
 
 function notify(message) {
   toast.textContent = message;
@@ -71,7 +88,7 @@ function resetRoomDialog() {
 
 function openRoom(modeToOpen) {
   if (!roomDialog) return;
-  if (activeCode) {
+  if (activeCode && activeRoom) {
     roomForm.hidden = true;
     roomLobby.hidden = false;
     renderRoom(activeRoom);
@@ -91,15 +108,23 @@ function stopRoomListeners() {
   stopPresenceWatch = null;
 }
 
-function renderPlayers(room) {
-  playerList.replaceChildren();
+function currentPlayers(room = activeRoom) {
   const players = Object.entries(room?.players || {});
   players.sort(([uidA], [uidB]) => {
     if (uidA === room?.hostUid) return -1;
     if (uidB === room?.hostUid) return 1;
     return 0;
   });
+  return players;
+}
 
+function playerName(room, uid) {
+  return room?.players?.[uid]?.name || (uid === currentUser?.uid ? activeName : 'Your person');
+}
+
+function renderPlayers(room) {
+  playerList.replaceChildren();
+  const players = currentPlayers(room);
   players.forEach(([uid, player]) => {
     const row = document.createElement('div');
     row.className = 'player-row';
@@ -111,7 +136,7 @@ function renderPlayers(room) {
     const name = document.createElement('b');
     name.textContent = uid === currentUser?.uid ? `${player.name || 'Player'} (You)` : (player.name || 'Player');
     const role = document.createElement('small');
-    role.textContent = uid === room?.hostUid ? 'Room host' : 'Guest';
+    role.textContent = uid === room.hostUid ? 'Room host · X' : 'Guest · O';
     details.append(name, role);
     const presence = document.createElement('span');
     presence.className = `presence ${player.online ? 'online' : ''}`;
@@ -120,15 +145,125 @@ function renderPlayers(room) {
     playerList.append(row);
   });
 
-  if (players.length < 2) {
+  const hasPartner = Boolean(room.guestUid && room.players?.[room.guestUid]);
+  roomGames.hidden = !hasPartner;
+  if (!hasPartner) {
     lobbyStatus.textContent = 'Menunggu pasanganmu bergabung… Bagikan kode room di atas.';
-    roomTip.textContent = 'Pasanganmu bisa bergabung dari browser atau HP masing-masing menggunakan kode ini.';
-    roomGames.hidden = true;
+    roomTip.textContent = 'Room sudah dibuat. Pasanganmu bisa bergabung dari HP atau laptop menggunakan kode ini.';
+    activeGameBanner.hidden = true;
   } else {
-    lobbyStatus.textContent = 'Yeay! Kalian sudah berada di room yang sama. Pilih permainan ♡';
-    roomTip.textContent = 'Pilih salah satu aktivitas di bawah. Tampilan game sudah disesuaikan untuk HP dan laptop.';
-    roomGames.hidden = false;
+    lobbyStatus.textContent = 'Yeay! Kalian sudah berada di room yang sama. Sekarang pilih game bersama ♡';
+    roomTip.textContent = 'Kalian harus memilih game yang sama. Game baru terbuka setelah pilihan cocok.';
   }
+}
+
+function renderSelection(room) {
+  const selections = room.selections || {};
+  const own = selections[currentUser?.uid]?.gameId || '';
+  const partnerUid = currentUser?.uid === room.hostUid ? room.guestUid : room.hostUid;
+  const partner = partnerUid ? (selections[partnerUid]?.gameId || '') : '';
+  myGameChoice.textContent = own ? (GAME_NAMES[own] || own) : 'Belum memilih';
+  partnerGameChoice.textContent = partner ? (GAME_NAMES[partner] || partner) : 'Belum memilih';
+
+  document.querySelectorAll('[data-lobby-game]').forEach((button) => {
+    const id = button.dataset.lobbyGame;
+    const ownSelected = own === id;
+    const partnerSelected = partner === id;
+    button.classList.toggle('is-selected', ownSelected);
+    button.classList.toggle('partner-selected', partnerSelected);
+    button.setAttribute('aria-pressed', String(ownSelected));
+  });
+
+  const hasPartner = Boolean(room.guestUid && room.players?.[room.guestUid]);
+  const match = Boolean(hasPartner && own && own === partner && AVAILABLE_GAMES.has(own));
+  const gameInProgress = room.game?.status === 'playing';
+  const isHost = currentUser?.uid === room.hostUid;
+
+  if (gameInProgress) {
+    selectionHint.textContent = 'Tic Tac Toe sedang berlangsung. Kalian bisa kembali ke game kapan saja.';
+    startGameButton.hidden = true;
+    activeGameBanner.hidden = false;
+    return;
+  }
+
+  activeGameBanner.hidden = true;
+  startGameButton.hidden = !hasPartner;
+  startGameButton.disabled = !match || !isHost;
+  if (!own && !partner) {
+    selectionHint.textContent = 'Pilih Tic Tac Toe. Minta pasanganmu memilih game yang sama.';
+    startGameButton.textContent = 'Menunggu pilihan yang cocok ♡';
+  } else if (!own || !partner) {
+    selectionHint.textContent = 'Satu pemain sudah memilih. Sekarang giliran pasanganmu.';
+    startGameButton.textContent = 'Menunggu pilihan pasangan ♡';
+  } else if (own !== partner) {
+    selectionHint.textContent = `Pilihan belum cocok: kamu memilih ${GAME_NAMES[own] || own}, pasangan memilih ${GAME_NAMES[partner] || partner}.`;
+    startGameButton.textContent = 'Pilih game yang sama ♡';
+  } else if (!AVAILABLE_GAMES.has(own)) {
+    selectionHint.textContent = 'Game ini belum aktif. Silakan pilih game yang sudah tersedia.';
+    startGameButton.textContent = 'Game belum tersedia';
+  } else if (!isHost) {
+    selectionHint.textContent = 'Pilihan kalian cocok! Menunggu host memulai permainan.';
+    startGameButton.textContent = 'Menunggu host memulai ♡';
+  } else {
+    selectionHint.textContent = 'Pilihan cocok! Kalian siap bermain. Mulai saat sudah siap.';
+    startGameButton.textContent = 'Mulai Tic Tac Toe ♡';
+  }
+}
+
+function gameRoundKey(room) {
+  return room?.game?.startedAt ? `${activeCode}:${room.game.startedAt}` : null;
+}
+
+function renderGame(room) {
+  const game = room?.game;
+  if (!game || game.id !== 'tic-tac-toe') return;
+  const hostName = playerName(room, room.hostUid);
+  const guestName = playerName(room, room.guestUid);
+  $('gamePlayerOne').textContent = hostName.charAt(0).toUpperCase();
+  $('gamePlayerOneName').textContent = hostName;
+  $('gamePlayerTwo').textContent = guestName.charAt(0).toUpperCase();
+  $('gamePlayerTwoName').textContent = guestName;
+
+  const state = game.state || {};
+  const cells = state.cells || {};
+  const isFinished = game.status === 'finished';
+  const myTurn = state.nextUid === currentUser?.uid;
+  if (state.winnerUid) {
+    gameStatus.textContent = state.winnerUid === currentUser?.uid
+      ? 'Kamu menang! Yeay! ♡'
+      : `${playerName(room, state.winnerUid)} menang. Nice game! ♡`;
+    gameStatus.classList.add('is-finished');
+  } else if (state.draw) {
+    gameStatus.textContent = 'Seri! Kalian sama-sama hebat. ♡';
+    gameStatus.classList.add('is-finished');
+  } else {
+    gameStatus.textContent = myTurn ? 'Giliran kamu. Pilih satu kotak! ♡' : `Giliran ${playerName(room, state.nextUid)}. Tunggu sebentar ya…`;
+    gameStatus.classList.remove('is-finished');
+  }
+
+  ticBoard.querySelectorAll('[data-cell]').forEach((button) => {
+    const index = Number(button.dataset.cell);
+    const value = cells[`c${index}`] || '';
+    button.textContent = value === 'X' ? '×' : value === 'O' ? '○' : '';
+    button.classList.toggle('cell-x', value === 'X');
+    button.classList.toggle('cell-o', value === 'O');
+    button.disabled = Boolean(value) || !myTurn || isFinished || moving;
+    button.setAttribute('aria-label', `Kotak ${index + 1}${value ? `: ${value}` : ': kosong'}`);
+  });
+
+  rematchButton.hidden = !isFinished;
+  rematchButton.disabled = !isFinished || currentUser?.uid !== room.hostUid;
+  rematchButton.textContent = currentUser?.uid === room.hostUid ? 'Main lagi ♡' : 'Menunggu host untuk main lagi';
+  $('gameHelp').textContent = `Kamu bermain sebagai ${currentUser?.uid === room.hostUid ? 'X' : 'O'}. X adalah ${hostName}, O adalah ${guestName}. Setiap langkah langsung tersinkron ke perangkat pasangan.`;
+}
+
+function maybeOpenGame(room) {
+  if (room?.game?.status !== 'playing' || room.game.id !== 'tic-tac-toe') return;
+  const key = gameRoundKey(room);
+  if (!key || key === lastOpenedRoundKey) return;
+  lastOpenedRoundKey = key;
+  if (roomDialog.open) roomDialog.close();
+  if (!gameDialog.open) gameDialog.showModal();
 }
 
 function renderRoom(room) {
@@ -136,6 +271,20 @@ function renderRoom(room) {
   activeRoom = room;
   lobbyCode.textContent = activeCode || '------';
   renderPlayers(room);
+  if (room.guestUid && room.players?.[room.guestUid]) renderSelection(room);
+  else {
+    roomGames.hidden = true;
+    activeGameBanner.hidden = true;
+    startGameButton.hidden = true;
+  }
+
+  if (room.game?.status === 'playing') {
+    if (gameDialog.open) renderGame(room);
+    else activeGameBanner.hidden = false;
+  } else if (room.game?.status === 'finished') {
+    if (gameDialog.open) renderGame(room);
+  }
+  maybeOpenGame(room);
 }
 
 function attachRoom(code, user) {
@@ -146,6 +295,7 @@ function attachRoom(code, user) {
       activeCode = null;
       activeRoom = null;
       if (roomDialog.open) roomDialog.close();
+      if (gameDialog.open) gameDialog.close();
       notify('Room sudah ditutup. Kamu bisa membuat room baru.');
       return;
     }
@@ -183,10 +333,11 @@ async function handleRoomSubmit(event) {
       ? await createRoom({ name, user: currentUser })
       : await joinRoom({ code, name, user: currentUser });
 
+    lastOpenedRoundKey = null;
     roomForm.hidden = true;
     roomLobby.hidden = false;
     roomTitle.textContent = 'You are in your room.';
-    roomLead.textContent = 'Bagikan kode ini kepada pasanganmu untuk mulai bermain bersama.';
+    roomLead.textContent = 'Bagikan kode ini kepada pasanganmu. Setelah masuk, pilih game bersama.';
     lobbyCode.textContent = activeCode;
     lobbyStatus.textContent = 'Menghubungkan room…';
     roomGames.hidden = true;
@@ -210,8 +361,12 @@ async function handleLeaveRoom() {
     await leaveRoom({ code: codeToLeave, user: currentUser });
     activeCode = null;
     activeRoom = null;
+    lastOpenedRoundKey = null;
     roomForm.reset();
+    roomForm.hidden = false;
+    roomLobby.hidden = true;
     if (roomDialog.open) roomDialog.close();
+    if (gameDialog.open) gameDialog.close();
     notify('Kamu sudah keluar dari room. Sampai bertemu lagi ♡');
   } catch (error) {
     console.error('[DiRi / LDR Playroom] Leave room failed:', error);
@@ -223,49 +378,89 @@ async function handleLeaveRoom() {
   }
 }
 
-function openGamePreview(gameName) {
-  if (!activeCode || !activeRoom) {
-    notify('Buat atau gabung room terlebih dahulu untuk memilih game.');
+async function handleGameSelection(gameId) {
+  if (!activeCode || !activeRoom || !currentUser) {
+    notify('Buat atau gabung room terlebih dahulu. Setelah pasangan masuk, kalian bisa memilih game bersama.');
     openRoom('create');
     return;
   }
-  const playerCount = Object.keys(activeRoom.players || {}).length;
-  if (playerCount < 2) {
-    notify('Tunggu pasanganmu bergabung dulu ya.');
+  if (!activeRoom.guestUid || !activeRoom.players?.[activeRoom.guestUid]) {
+    notify('Tunggu sampai pasanganmu bergabung ke room.');
     if (!roomDialog.open) roomDialog.showModal();
     return;
   }
+  if (!AVAILABLE_GAMES.has(gameId)) {
+    notify('Game ini sedang disiapkan. Saat ini Tic Tac Toe sudah bisa dimainkan.');
+    return;
+  }
+  try {
+    await selectRoomGame({ code: activeCode, gameId, user: currentUser });
+    if (!roomDialog.open) {
+      roomForm.hidden = true;
+      roomLobby.hidden = false;
+      roomDialog.showModal();
+    }
+    notify('Pilihan game tersimpan. Sekarang pasanganmu memilih juga. ♡');
+  } catch (error) {
+    notify(error?.message || 'Pilihan game belum berhasil disimpan.');
+  }
+}
 
-  $('gameTitle').textContent = gameName;
-  const people = Object.entries(activeRoom.players || {});
-  const me = people.find(([uid]) => uid === currentUser?.uid)?.[1];
-  const partner = people.find(([uid]) => uid !== currentUser?.uid)?.[1];
-  $('gamePlayerOne').textContent = (me?.name || activeName || 'Y').charAt(0).toUpperCase();
-  $('gamePlayerOneName').textContent = me?.name || activeName || 'You';
-  $('gamePlayerTwo').textContent = (partner?.name || '♡').charAt(0).toUpperCase();
-  $('gamePlayerTwoName').textContent = partner?.name || 'Your person';
-  const board = $('gameBoardPreview');
-  board.hidden = gameName !== 'Tic Tac Toe';
-  $('gameScreenMessage').textContent = gameName === 'Tic Tac Toe'
-    ? 'Layout papan Tic Tac Toe dibuat responsif untuk sentuhan jari. Sinkronisasi giliran dan logika multiplayer akan diaktifkan pada tahap pengembangan game.'
-    : `Tampilan ${gameName} akan dibuat mengikuti ukuran layar perangkat. Logika dan sinkronisasi multiplayer game ini akan dikembangkan setelah fondasi room stabil.`;
+async function handleStartGame() {
+  if (!activeCode || !currentUser) return;
+  startGameButton.disabled = true;
+  try {
+    await startRoomGame({ code: activeCode, gameId: 'tic-tac-toe', user: currentUser });
+    notify('Game dimulai! Semoga beruntung. ♡');
+  } catch (error) {
+    notify(error?.message || 'Game belum bisa dimulai.');
+  } finally {
+    if (activeRoom) renderSelection(activeRoom);
+  }
+}
 
-  if (roomDialog.open) roomDialog.close();
-  if (!gameDialog.open) gameDialog.showModal();
+async function handleCellClick(index) {
+  if (!activeCode || !currentUser || moving) return;
+  moving = true;
+  ticBoard.querySelectorAll('button').forEach((button) => { button.disabled = true; });
+  try {
+    const result = await playTicTacToeMove({ code: activeCode, user: currentUser, index });
+    if (!result.committed) notify(result.reason || 'Langkah belum diterima. Periksa giliran dan kotak yang dipilih.');
+  } catch (error) {
+    notify(error?.message || 'Langkah belum berhasil dikirim.');
+  } finally {
+    moving = false;
+    if (activeRoom?.game) renderGame(activeRoom);
+  }
+}
+
+async function handleRematch() {
+  if (!activeCode || !currentUser) return;
+  rematchButton.disabled = true;
+  try {
+    await startNewTicTacToeRound({ code: activeCode, user: currentUser });
+    notify('Ronde baru dimulai. Good luck! ♡');
+  } catch (error) {
+    notify(error?.message || 'Belum bisa memulai ronde baru.');
+  } finally {
+    rematchButton.disabled = currentUser?.uid !== activeRoom?.hostUid;
+  }
 }
 
 function returnToRoom() {
   if (gameDialog.open) gameDialog.close();
-  if (activeCode && !roomDialog.open) {
+  if (activeCode && activeRoom) {
+    lastOpenedRoundKey = gameRoundKey(activeRoom);
     roomForm.hidden = true;
     roomLobby.hidden = false;
     roomTitle.textContent = 'You are in your room.';
-    roomLead.textContent = 'Bagikan kode ini kepada pasanganmu untuk mulai bermain bersama.';
-    roomDialog.showModal();
+    roomLead.textContent = 'Pilih game bersama dan nikmati waktu kalian. ♡';
+    if (!roomDialog.open) roomDialog.showModal();
+    renderRoom(activeRoom);
   }
 }
 
-// Page interactions
+// Homepage and navigation interactions.
 $('year').textContent = new Date().getFullYear();
 $('menuToggle').addEventListener('click', () => {
   const nav = $('mainNav');
@@ -285,7 +480,7 @@ $('leaveRoom').addEventListener('click', handleLeaveRoom);
 roomCodeInput.addEventListener('input', () => {
   roomCodeInput.value = roomCodeInput.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
 });
-copyCode.addEventListener('click', async () => {
+$('copyCode').addEventListener('click', async () => {
   if (!activeCode) return;
   try {
     await navigator.clipboard.writeText(activeCode);
@@ -294,9 +489,32 @@ copyCode.addEventListener('click', async () => {
     notify(`Kode room: ${activeCode}`);
   }
 });
-document.querySelectorAll('[data-game]').forEach((button) => {
-  button.addEventListener('click', () => openGamePreview(button.dataset.game));
+
+document.querySelectorAll('[data-lobby-game]').forEach((button) => {
+  button.addEventListener('click', () => handleGameSelection(button.dataset.lobbyGame));
 });
+document.querySelectorAll('.game-open[data-game]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const gameId = button.dataset.game === 'Tic Tac Toe' ? 'tic-tac-toe' : '';
+    if (!gameId) return notify('Game ini segera hadir. Untuk sekarang, Tic Tac Toe sudah bisa dimainkan. ♡');
+    handleGameSelection(gameId);
+  });
+});
+startGameButton.addEventListener('click', handleStartGame);
+$('resumeGame').addEventListener('click', () => {
+  if (!activeRoom?.game || activeRoom.game.status !== 'playing') return;
+  const key = gameRoundKey(activeRoom);
+  lastOpenedRoundKey = key;
+  if (roomDialog.open) roomDialog.close();
+  if (!gameDialog.open) gameDialog.showModal();
+  renderGame(activeRoom);
+});
+ticBoard.addEventListener('click', (event) => {
+  const cell = event.target.closest('[data-cell]');
+  if (!cell || cell.disabled) return;
+  handleCellClick(Number(cell.dataset.cell));
+});
+rematchButton.addEventListener('click', handleRematch);
 $('closeGame').addEventListener('click', returnToRoom);
 $('backToRoom').addEventListener('click', returnToRoom);
 gameDialog.addEventListener('cancel', (event) => {
@@ -304,7 +522,5 @@ gameDialog.addEventListener('cancel', (event) => {
   returnToRoom();
 });
 window.addEventListener('pagehide', () => {
-  // Firebase onDisconnect handles presence when the browser closes or loses connection.
-  // Do not delete the room here; the other player's session may still be active.
   if (stopPresenceWatch) stopPresenceWatch();
 });

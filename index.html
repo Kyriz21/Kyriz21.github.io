@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff7fb">
+  <meta name="description" content="DiRi LDR Playroom — ruang bermain privat untuk dua orang, di mana pun mereka berada.">
+  <meta name="author" content="DiRi">
+  <title>DiRi — LDR Playroom</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/review-build.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="DiRi LDR Playroom home">
+      <span class="brand-mark" aria-hidden="true">♡</span>
+      <span class="brand-copy"><strong>DiRi</strong><small>LDR PLAYROOM</small></span>
+    </a>
+    <div class="header-right">
+      <span id="connection-status" class="connection-pill"><i></i> Connecting</span>
+      <button class="button button-quiet button-small" data-action="open-join">Join room</button>
+      <button class="button button-primary button-small" data-action="open-create">Create room <span aria-hidden="true">↗</span></button>
+    </div>
+  </header>
+
+  <main id="app" class="page-content" aria-live="polite">
+    <section class="loading-state">
+      <span class="loading-heart">♡</span>
+      <p>Menyiapkan ruang kecil kalian…</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Made with care by <strong>DiRi</strong></span>
+    <span>© 2026 DiRi. All rights reserved.</span>
+  </footer>
+
+  <dialog id="room-dialog" class="room-dialog">
+    <div class="dialog-topline">
+      <div><span class="eyebrow">YOUR LITTLE SPACE</span><h2 id="dialog-title">Create a room</h2></div>
+      <button class="icon-button" type="button" data-action="close-dialog" aria-label="Close">×</button>
+    </div>
+    <form id="create-form" class="dialog-form">
+      <label for="create-name">Nama panggilan</label>
+      <input id="create-name" name="name" maxlength="24" autocomplete="nickname" placeholder="Contoh: Sunshine" required>
+      <p class="field-note">Nama ini akan terlihat oleh pasangan di dalam room.</p>
+      <button class="button button-primary button-wide" type="submit">Create my room <span>♡</span></button>
+    </form>
+    <form id="join-form" class="dialog-form" hidden>
+      <label for="join-name">Nama panggilan</label>
+      <input id="join-name" name="name" maxlength="24" autocomplete="nickname" placeholder="Nama panggilanmu" required>
+      <label for="join-code">Room code</label>
+      <input id="join-code" name="code" maxlength="6" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABC123" class="code-input" required>
+      <p class="field-note">Masukkan kode enam karakter yang dibagikan oleh host.</p>
+      <button class="button button-primary button-wide" type="submit">Join room <span>→</span></button>
+    </form>
+    <p id="dialog-error" class="form-error" role="alert" hidden></p>
+    <p class="dialog-footnote">Room hanya untuk dua pemain. Jangan gunakan ruang ini untuk membagikan kata sandi atau informasi rahasia.</p>
+  </dialog>
+
+  <div id="toast-region" class="toast-region" aria-live="assertive" aria-atomic="true"></div>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
